@@ -1,4 +1,4 @@
-package exportmanagerInterface;
+package export.exportmanagerInterface;
 
 /**
  * Includes the error message data.

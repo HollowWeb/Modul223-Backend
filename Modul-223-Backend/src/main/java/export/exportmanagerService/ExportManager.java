@@ -1,8 +1,8 @@
-package exportmanagerService;
+package export.exportmanagerService;
 
-import exportmanagerInterface.ExportCriteria;
-import exportmanagerInterface.ExportResponse;
-import exportmanagerInterface.IExportManager;
+import export.exportmanagerInterface.ExportCriteria;
+import export.exportmanagerInterface.ExportResponse;
+import export.exportmanagerInterface.IExportManager;
 
 /**
  * Manages the export to a pdf file.

@@ -1,7 +1,7 @@
 package Client;
 
-import exportmanagerInterface.ExportCriteria;
-import exportmanagerInterface.IExportManager;
+import export.exportmanagerInterface.ExportCriteria;
+import export.exportmanagerInterface.IExportManager;
 
 /*
 Dies ist unsere schnittstelle zwischen Backend (Business logic) und GUI.
