@@ -1,7 +1,9 @@
 package exportmanagerInterface;
 
 
-
+/**
+ * Our Interface for the Export service including the export method.
+ */
 public interface IExportManager {
 
     /*

@@ -1,5 +1,8 @@
 package exportmanagerInterface;
 
+/**
+ * Includes the error message data.
+ */
 public class ExportResponse {
 
     /*

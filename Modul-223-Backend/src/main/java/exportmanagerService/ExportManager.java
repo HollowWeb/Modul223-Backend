@@ -2,23 +2,24 @@ package exportmanagerService;
 
 import exportmanagerInterface.ExportCriteria;
 import exportmanagerInterface.ExportResponse;
+import exportmanagerInterface.IExportManager;
 
-public class ExportManager {
+/**
+ * Manages the export to a pdf file.
+ */
+public class ExportManager implements IExportManager {
 
-    /*
-
-    Hier kommt die eigentliche Logik hin. für das Exportieren.
-
-    Diese Methode wird dann von der IExportManager klasse die von der Access Klasse (also unsere pseudo API aufgerufen wird) getriggert.
-    */
-
-    ExportResponse export(ExportCriteria criteria) {
+    @Override
+    public ExportResponse export(ExportCriteria criteria) {
         ExportResponse result = new ExportResponse("");
         /*
-        exportFile(criteria);
+        Hier kommt die eigentliche Logik hin. für das Exportieren.
+        Diese Methode wird dann von der IExportManager klasse die von der Access Klasse (also unsere pseudo API aufgerufen wird) getriggert.
         */
 
         return result;
-
     }
+
+
+
 }
