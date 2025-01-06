@@ -54,5 +54,3 @@ Here are the recommended **User Roles** and their associated permissions for the
 - Upload images for drafts.
 
 ---
-
-Would you like me to add this directly into the document?

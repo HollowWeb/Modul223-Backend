@@ -1,0 +1,10 @@
+Database Entities
+
+Responsibilities:
+Represents database tables using JPA (Java Persistence API) annotations like @Entity and @Table.
+Defines fields as columns in the database schema.
+Provides mappings between database rows and Java objects.
+Includes relationships such as @OneToMany, @ManyToOne, etc.
+
+Layer:
+Persistence Layer (Data Model Layer).

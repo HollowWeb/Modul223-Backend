@@ -1,0 +1,10 @@
+Repository Layer
+
+Responsibilities:
+Interfaces with the database using Spring Data JPA.
+Provides built-in CRUD operations (Create, Read, Update, Delete).
+Allows for defining custom queries using method names or JPQL (Java Persistence Query Language).
+Acts as the data access layer that isolates database operations from business logic.
+
+Layer:
+Data Access Layer.

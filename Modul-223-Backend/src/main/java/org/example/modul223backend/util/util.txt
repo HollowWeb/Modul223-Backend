@@ -1,0 +1,9 @@
+Utility Classes
+
+Responsibilities:
+Contains helper functions and mappers that are shared across multiple layers.
+Provides utilities like entity-to-DTO mapping, string manipulation, and formatting.
+Ensures code reusability and prevents code duplication.
+
+Layer:
+Helper Layer (Cross-Cutting Concern).

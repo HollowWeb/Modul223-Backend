@@ -1,0 +1,8 @@
+Data Transfer Objects (DTO)
+Responsibilities:
+Provides structured data objects that are transferred between the Controller and Service Layer.
+Used to isolate the database entities from external input/output (e.g., API consumers).
+Avoids exposing sensitive fields like passwords from the database entities.
+
+Layer:
+Data Transfer Layer (bridges the Presentation Layer and Business Layer).
