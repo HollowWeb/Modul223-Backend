@@ -1,4 +1,11 @@
 package org.example.modul223backend.exception.Article;
 
-public class ArticleNotFoundException {
+/**
+ * Shows the specified exception if an error happens.
+ */
+public class ArticleNotFoundException extends RuntimeException {
+
+    public ArticleNotFoundException(String message) {
+        super(message);
+    }
 }

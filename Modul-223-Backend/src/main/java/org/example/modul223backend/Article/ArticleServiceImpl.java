@@ -6,6 +6,9 @@ import org.example.modul223backend.Article.Article.Status;
 import org.example.modul223backend.Article.ArticleRepository;
 import org.example.modul223backend.User.User;
 import org.example.modul223backend.User.UserRepository;
+import org.example.modul223backend.exception.Article.ArticleNotFoundException;
+import org.example.modul223backend.exception.Article.InvalidArticleDataException;
+import org.example.modul223backend.exception.User.UserNotFoundException;
 import org.example.modul223backend.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +28,11 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleDTO createArticle(ArticleDTO articleDTO) {
         User user = userRepository.findById(articleDTO.getCreatedById())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (articleDTO.getTitle() == null || articleDTO.getTitle().isEmpty()) {
+            throw new InvalidArticleDataException("Title cannot be null or empty");
+        }
 
         Article article = Mapper.mapToArticleEntity(articleDTO, user);
         article = articleRepository.save(article);
@@ -35,7 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleDTO updateArticle(Long id, ArticleDTO articleDTO) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Article not found"));
+                .orElseThrow(() -> new ArticleNotFoundException("Article not found"));
 
         article.setTitle(articleDTO.getTitle());
         article.setContent(articleDTO.getContent());

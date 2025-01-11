@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/articles")
 public class ArticleController {
 
@@ -23,7 +24,7 @@ public class ArticleController {
         return articleService.getArticleById(id);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<ArticleDTO> getAllArticles() {
         return articleService.getAllArticles();
     }

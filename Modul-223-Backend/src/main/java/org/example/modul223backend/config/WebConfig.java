@@ -1,4 +1,4 @@
-package Client;
+package org.example.modul223backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
