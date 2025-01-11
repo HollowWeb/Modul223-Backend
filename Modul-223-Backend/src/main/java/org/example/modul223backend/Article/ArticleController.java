@@ -23,7 +23,7 @@ public class ArticleController {
         return articleService.getArticleById(id);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<ArticleDTO> getAllArticles() {
         return articleService.getAllArticles();
     }

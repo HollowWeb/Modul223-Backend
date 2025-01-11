@@ -1,11 +1,12 @@
 package org.example.modul223backend.User;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.modul223backend.Role.Role;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,11 +26,15 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String passwordHash; // Encrypted password
+    private String passwordHash;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false) // Relationship with Role
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER) // Fetch roles eagerly for simplicity
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -47,4 +52,3 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 }
-

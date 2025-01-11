@@ -2,6 +2,10 @@ package org.example.modul223backend.Role;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.modul223backend.User.User;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -15,7 +19,10 @@ public class Role {
     private Long id;
 
     @Getter
-    @Column(unique = true, nullable = false)
-    private String roleName; // Role name like ADMIN, EDITOR, etc.
+    @Column(nullable = false, unique = true)
+    private String roleName;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users = new HashSet<>();
 
 }
