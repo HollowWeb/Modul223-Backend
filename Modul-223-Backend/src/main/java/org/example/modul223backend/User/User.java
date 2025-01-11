@@ -28,13 +28,13 @@ public class User {
     @Column(nullable = false)
     private String passwordHash;
 
-    @ManyToMany(fetch = FetchType.EAGER) // Fetch roles eagerly for simplicity
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})// Fetch roles eagerly for simplicity
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

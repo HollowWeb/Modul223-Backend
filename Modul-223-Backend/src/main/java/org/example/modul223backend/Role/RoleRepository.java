@@ -1,6 +1,5 @@
 package org.example.modul223backend.Role;
 
-import org.example.modul223backend.Role.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

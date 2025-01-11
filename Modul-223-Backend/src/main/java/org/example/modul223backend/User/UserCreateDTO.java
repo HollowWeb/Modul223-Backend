@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.modul223backend.Role.Role;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -22,6 +24,5 @@ public class UserCreateDTO {
     @NotBlank(message = "Password is mandatory")
     private String password;
 
-    @NotBlank(message = "Role is mandatory")
-    private Set<String> roleNames; // Role as a string
+    private Set<Role> roles = new HashSet<>();
 }

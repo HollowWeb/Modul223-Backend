@@ -3,6 +3,8 @@ package org.example.modul223backend.User;
 import jakarta.validation.Valid;
 import org.example.modul223backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,23 +16,30 @@ import java.util.Map;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
 
-    private JwtUtil jwtUtil;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
+
+    @Autowired
+    public UserController(UserService userService, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody @Valid UserCreateDTO userCreateDTO) {
         UserDTO registeredUser = userService.createUser(userCreateDTO);
-        // TODO: IMPLEMENT RETURNING OF TOKEN ON USER REGISTER
-        //String token = jwtUtil.generateToken(registeredUser.getUsername());
+
+        String token = jwtUtil.generateToken(registeredUser.getUsername(), registeredUser.getRoles());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
 
         Map<String, Object> response = new HashMap<>();
         response.put("user", registeredUser);
-        //response.put("token", token);
         response.put("message", "Registration successful");
 
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -57,8 +66,9 @@ public class UserController {
     public ResponseEntity<Object> login(@RequestBody LoginRequestDTO loginRequestDTO) {
         String token = userService.login(loginRequestDTO);
         Map<String, String> response = new HashMap<>();
-        response.put("token", token);
         response.put("message", "Login successful");
-        return ResponseEntity.ok(response);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package org.example.modul223backend.Role;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.modul223backend.User.User;
@@ -21,8 +22,4 @@ public class Role {
     @Getter
     @Column(nullable = false, unique = true)
     private String roleName;
-
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
-
 }

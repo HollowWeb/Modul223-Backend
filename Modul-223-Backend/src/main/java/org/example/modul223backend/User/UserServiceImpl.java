@@ -1,9 +1,7 @@
 package org.example.modul223backend.User;
 
-import org.example.modul223backend.User.UserDTO;
-import org.example.modul223backend.User.User;
+import jakarta.transaction.Transactional;
 import org.example.modul223backend.Role.Role;
-import org.example.modul223backend.User.UserRepository;
 import org.example.modul223backend.Role.RoleRepository;
 import org.example.modul223backend.exception.RoleException.RoleNotFoundException;
 import org.example.modul223backend.exception.UserException.DuplicateUserException;
@@ -31,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final JwtUtil jwtUtil;
 
     // Constructor-based Dependency Injection
+    @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -38,6 +37,7 @@ public class UserServiceImpl implements UserService {
         this.jwtUtil = jwtUtil;
     }
 
+    @Transactional
     @Override
     public UserDTO createUser(UserCreateDTO userCreateDTO) {
         if (userRepository.existsByUsername(userCreateDTO.getUsername())) {
@@ -137,9 +137,9 @@ public class UserServiceImpl implements UserService {
         }
 
         // Include roles in the token payload for frontend use
-        String roles = user.getRoles().stream()
+        Set<String> roles = user.getRoles().stream()
                 .map(Role::getRoleName)
-                .collect(Collectors.joining(","));
+                .collect(Collectors.toSet());
         return jwtUtil.generateToken(user.getUsername(), roles);
     }
 

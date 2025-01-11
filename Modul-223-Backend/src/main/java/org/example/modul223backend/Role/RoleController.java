@@ -1,8 +1,6 @@
 package org.example.modul223backend.Role;
 
 
-import org.example.modul223backend.Role.RoleDTO;
-import org.example.modul223backend.Role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +10,13 @@ import java.util.List;
 @RequestMapping("/api/roles")
 public class RoleController {
 
+    private final RoleService roleService;
+
     @Autowired
-    private RoleService roleService;
+    public RoleController(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
 
     @PostMapping
     public RoleDTO createRole(@RequestBody RoleDTO roleDTO) {
