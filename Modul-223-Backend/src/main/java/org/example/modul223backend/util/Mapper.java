@@ -8,6 +8,7 @@ import org.example.modul223backend.Image.Image;
 import org.example.modul223backend.Image.ImageDTO;
 import org.example.modul223backend.Tag.Tag;
 import org.example.modul223backend.Tag.TagDTO;
+import org.example.modul223backend.User.UserCreateDTO;
 import org.example.modul223backend.User.UserDTO;
 import org.example.modul223backend.Role.*;
 import org.example.modul223backend.User.User;
@@ -15,6 +16,8 @@ import org.example.modul223backend.Version.Version;
 import org.example.modul223backend.Version.VersionDTO;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Mapper {
 
@@ -23,16 +26,20 @@ public class Mapper {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getRole().getRoleName() // Convert role entity to string
+                user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet())
         );
     }
 
-    public static User mapToEntity(UserDTO userDTO, Role role) {
-        User user = new User();
-        user.setUsername(userDTO.getUsername());
-        user.setEmail(userDTO.getEmail());
-        user.setRole(role); // Set role entity
-        return user;
+    public static User mapToEntity(UserCreateDTO userCreateDTO, Set<Role> roles) {
+        return new User(
+                null,
+                userCreateDTO.getUsername(),
+                userCreateDTO.getEmail(),
+                userCreateDTO.getPassword(),
+                roles,
+                null,
+                null
+        );
     }
 
     // Convert Article Entity to DTO
