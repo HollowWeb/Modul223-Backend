@@ -8,8 +8,8 @@ import org.example.modul223backend.Image.Image;
 import org.example.modul223backend.Image.ImageDTO;
 import org.example.modul223backend.Tag.Tag;
 import org.example.modul223backend.Tag.TagDTO;
-import org.example.modul223backend.User.UserCreateDTO;
-import org.example.modul223backend.User.UserDTO;
+import org.example.modul223backend.User.DTO.UserCreateDTO;
+import org.example.modul223backend.User.DTO.UserDTO;
 import org.example.modul223backend.Role.*;
 import org.example.modul223backend.User.User;
 import org.example.modul223backend.Version.Version;
@@ -38,7 +38,8 @@ public class Mapper {
                 userCreateDTO.getPassword(),
                 roles,
                 null,
-                null
+                null,
+                false
         );
     }
 

@@ -30,17 +30,18 @@ Here are the recommended **User Roles** and their associated permissions for the
 - Create, edit, and delete comments.
 - Upload and manage images associated with their articles.
 - Export their articles in PDF or HTML format.
+- Can Approve of User Articles.
 
 ---
 
 ### 3. **Viewer**
-**Purpose:** Read-only access for consuming content.
+**Purpose:** Read-only access for consuming (DOES NOT HAVE ACCOUNT).
 
 **Permissions:**
 - View published articles.
 - Search and filter content based on categories, tags, and authors.
-- Add comments to articles (if enabled by the Admin).
-- Download/export articles if allowed by the Admin.
+- Add comments to articles.
+- Download/export articles.
 
 ---
 
@@ -53,4 +54,15 @@ Here are the recommended **User Roles** and their associated permissions for the
 - Comment on articles.
 - Upload images for drafts.
 
+---
+### 5. **User**
+**Purpose:** Default User.
+
+**Permissions:**
+- Create, edit, and delete articles they own or have access to.
+- View Articles.
+- Comment on Articles.
+- Create, edit, and delete comments.
+- Upload and manage images associated with their articles.
+- Export articles in PDF or HTML format.
 ---

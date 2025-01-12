@@ -33,6 +33,9 @@ public class Comment {
     @JoinColumn(name = "parent_comment_id") // Optional parent comment for replies
     private Comment parentComment;
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

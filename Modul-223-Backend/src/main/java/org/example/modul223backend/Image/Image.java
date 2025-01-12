@@ -28,6 +28,9 @@ public class Image {
     @Column(nullable = false)
     private byte[] imageData; // Binary data for the image
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime uploadedAt;
 

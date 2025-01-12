@@ -28,7 +28,7 @@ public class User {
     @Column(nullable = false)
     private String passwordHash;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})// Fetch roles eagerly for simplicity
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -41,6 +41,9 @@ public class User {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private boolean deleted = false;
 
     @PrePersist
     protected void onCreate() {

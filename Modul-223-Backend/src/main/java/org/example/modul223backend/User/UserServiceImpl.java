@@ -1,8 +1,15 @@
 package org.example.modul223backend.User;
 
 import jakarta.transaction.Transactional;
+import org.example.modul223backend.Article.ArticleRepository;
+import org.example.modul223backend.Comment.CommentRepository;
+import org.example.modul223backend.Image.ImageRepository;
 import org.example.modul223backend.Role.Role;
+import org.example.modul223backend.Role.RoleConstants;
 import org.example.modul223backend.Role.RoleRepository;
+import org.example.modul223backend.User.DTO.LoginRequestDTO;
+import org.example.modul223backend.User.DTO.UserCreateDTO;
+import org.example.modul223backend.User.DTO.UserDTO;
 import org.example.modul223backend.exception.RoleException.RoleNotFoundException;
 import org.example.modul223backend.exception.UserException.DuplicateUserException;
 import org.example.modul223backend.exception.UserException.UnauthorizedActionException;
@@ -20,6 +27,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.fasterxml.jackson.databind.type.LogicalType.Map;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -27,14 +36,20 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
+    private final ImageRepository imageRepository;
 
     // Constructor-based Dependency Injection
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, JwtUtil jwtUtil, ArticleRepository articleRepository, CommentRepository commentRepository, ImageRepository imageRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.articleRepository = articleRepository;
+        this.commentRepository = commentRepository;
+        this.imageRepository = imageRepository;
     }
 
     @Transactional
@@ -47,8 +62,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUserException("Email already registered.");
         }
 
-        Set<Role> roles = Set.of(roleRepository.findByRoleName("USER")
-                .orElseThrow(() -> new RoleNotFoundException("Default role 'USER' not found.")));
+        Set<Role> roles = getRolesFromNames(Set.of(RoleConstants.USER));
 
         if (userCreateDTO.getPassword() == null || userCreateDTO.getPassword().isEmpty()){
             throw new UserException("Password cannot be null or empty.", HttpStatus.CONFLICT);
@@ -84,7 +98,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserNotFoundException("Current user not found."));
 
         boolean isAdmin = currentUser.getRoles().stream()
-                .anyMatch(role -> role.getRoleName().equals("ADMIN"));
+                .anyMatch(role -> role.getRoleName().equals(RoleConstants.ADMIN));
 
         if (!isAdmin && !currentUser.getId().equals(id)) {
             throw new UnauthorizedActionException("You are not authorized to update this user.");
@@ -95,37 +109,47 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDTO.getEmail());
 
         // Handle roles
-        Set<Role> roles = userDTO.getRoles().stream()
-                .map(roleName -> roleRepository.findByRoleName(roleName)
-                        .orElseThrow(() -> new RoleNotFoundException("Role not found: " + roleName)))
-                .collect(Collectors.toSet());
+        Set<Role> roles = getRolesFromNames(userDTO.getRoles());
+
         user.setRoles(roles);
 
         user = userRepository.save(user);
         return Mapper.mapToDTO(user);
     }
 
+    @Transactional
     @Override
     public void deleteUser(Long id) {
-        // Get the current authenticated user's details
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userRepository.findByUsername(currentUsername)
+        User currentUser = userRepository.findByUsernameAndDeletedFalse(currentUsername)
                 .orElseThrow(() -> new UserNotFoundException("Current user not found."));
-
-        // Allow deletion if the current user is an admin or deleting their own account
-        boolean isAdmin = currentUser.getRoles().stream()
-                .anyMatch(role -> role.getRoleName().equals("ADMIN"));
-
-        if (!isAdmin && !currentUser.getId().equals(id)) {
-            throw new UnauthorizedActionException("You are not authorized to delete this user.");
-        }
-
-        // Proceed with deletion if the user exists
-        User userToDelete = userRepository.findById(id)
+        User userToDelete = userRepository.findActiveById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found."));
 
-        userRepository.delete(userToDelete);
+        boolean isAdmin = currentUser.getRoles().stream()
+                .anyMatch(role -> role.getRoleName().equals(RoleConstants.ADMIN));
+
+        if (!isAdmin && !currentUser.getId().equals(id)) {
+            throw new UnauthorizedActionException("Only admins can delete other users' accounts.");
+        }
+
+        // Soft delete user and related data
+        markAsDeleted(userToDelete);
     }
+
+    private void markAsDeleted(User user) {
+        user.setDeleted(true);
+
+        // Soft delete related entities
+        articleRepository.softDeleteByUser(user);  // Mark user's articles as deleted
+        commentRepository.softDeleteByUser(user); // Mark user's comments as deleted
+        imageRepository.softDeleteByUser(user.getId());   // Mark user's images as deleted
+
+        // Save the user to persist the `deleted` flag
+        userRepository.save(user);
+    }
+
+
 
     @Override
     public String login(LoginRequestDTO loginRequestDTO) {
@@ -141,6 +165,19 @@ public class UserServiceImpl implements UserService {
                 .map(Role::getRoleName)
                 .collect(Collectors.toSet());
         return jwtUtil.generateToken(user.getUsername(), roles);
+    }
+
+    private Set<Role> getRolesFromNames(Set<String> roleNames) {
+        return roleNames.stream()
+                .map(roleName -> roleRepository.findByRoleName(roleName)
+                        .orElseThrow(() -> new RoleNotFoundException("Role not found: " + roleName)))
+                .collect(Collectors.toSet());
+    }
+
+    private boolean isAdminOrOwner(User currentUser, User targetUser) {
+        boolean isAdmin = currentUser.getRoles().stream()
+                .anyMatch(role -> role.getRoleName().equals(RoleConstants.ADMIN));
+        return isAdmin || currentUser.getId().equals(targetUser.getId());
     }
 
 }

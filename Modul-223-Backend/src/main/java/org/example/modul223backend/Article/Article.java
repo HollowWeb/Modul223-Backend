@@ -46,6 +46,9 @@ public class Article {
         ARCHIVED
     }
 
+    @Column(nullable = false)
+    private boolean deleted = false;
+
     @PrePersist
     protected void onCreate() {
         createdAt = updatedAt = LocalDateTime.now();

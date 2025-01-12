@@ -1,13 +1,10 @@
-package org.example.modul223backend.User;
+package org.example.modul223backend.User.DTO;
 
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import org.example.modul223backend.Role.Role;
 
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor

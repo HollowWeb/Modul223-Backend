@@ -1,6 +1,9 @@
 package org.example.modul223backend.User;
 
 import jakarta.validation.Valid;
+import org.example.modul223backend.User.DTO.LoginRequestDTO;
+import org.example.modul223backend.User.DTO.UserCreateDTO;
+import org.example.modul223backend.User.DTO.UserDTO;
 import org.example.modul223backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -26,6 +29,12 @@ public class UserController {
         this.jwtUtil = jwtUtil;
     }
 
+    /**
+     * EndPoint /api/users/register
+     * Registers a new user and gives him the Default Role USER
+     * @param userCreateDTO UserName, Valid Email and Password.
+     * @return Registered User with USER Role and Bearer Token in Header.
+     */
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody @Valid UserCreateDTO userCreateDTO) {
         UserDTO registeredUser = userService.createUser(userCreateDTO);
@@ -57,9 +66,15 @@ public class UserController {
         return userService.updateUser(id, userDTO);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    /**
+     * Deleting a user can only happen by the User himself or a User with the Role ADMIN
+     * @param id ID of user to delete
+     * @return Success Body
+     */
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.ok("User deleted successfully.");
     }
 
     @PostMapping("/login")
