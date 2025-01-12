@@ -1,0 +1,10 @@
+Controller Layer
+
+Responsibilities:
+Contains RESTful API endpoints that handle HTTP requests.
+Acts as the entry point for the application.
+Receives requests, processes inputs, and returns responses (typically JSON).
+Delegates business logic to the Service Layer and sends responses back to clients.
+
+Layer:
+Presentation Layer (API Layer).

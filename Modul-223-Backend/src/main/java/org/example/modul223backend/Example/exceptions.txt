@@ -1,0 +1,10 @@
+Exception Handling
+
+Responsibilities:
+Manages custom exceptions and error responses.
+Provides meaningful error messages to API consumers.
+Handles issues like resource not found, invalid inputs, and database errors gracefully.
+Centralizes exception handling to keep the codebase clean and organized.
+
+Layer:
+Error Handling Layer (Cross-Cutting Concern).

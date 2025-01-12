@@ -1,0 +1,11 @@
+Service Layer
+
+Responsibilities:
+Implements business logic and data processing rules.
+Communicates with the Repository Layer to fetch or modify data.
+Provides reusable logic that can be called by the Controller Layer.
+Uses DTOs for input validation and output transformation.
+Separates business rules from web-layer logic, ensuring scalability.
+
+Layer:
+Business Logic Layer.
