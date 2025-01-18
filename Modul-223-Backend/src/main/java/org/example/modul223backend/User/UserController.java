@@ -1,14 +1,14 @@
 package org.example.modul223backend.User;
 
 import jakarta.validation.Valid;
-import org.example.modul223backend.User.DTO.LoginRequestDTO;
-import org.example.modul223backend.User.DTO.UserCreateDTO;
-import org.example.modul223backend.User.DTO.UserDTO;
+import org.example.modul223backend.Role.RoleConstants;
+import org.example.modul223backend.User.DTO.*;
 import org.example.modul223backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -22,6 +22,7 @@ public class UserController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
+
 
     @Autowired
     public UserController(UserService userService, JwtUtil jwtUtil) {
@@ -86,4 +87,47 @@ public class UserController {
         headers.set("Authorization", "Bearer " + token);
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
+
+    @PutMapping("/settings")
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserUpdateDTO userUpdateDTO) {
+        UserDTO updatedUser = userService.updateUserSetting(userUpdateDTO);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PutMapping("/{id}/admin-update")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserDTO> adminUpdateUser(@PathVariable Long id, @RequestBody UserAdminUpdateDTO userUpdateDTO) {
+        UserDTO updatedUser = userService.adminUpdateUser(id, userUpdateDTO);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PostMapping("/{id}/reactivate")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Object> reactivateUser(@PathVariable Long id) {
+        userService.reactivateUser(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User reactivated successfully.");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}/change-password")
+    public ResponseEntity<String> changePassword(@PathVariable Long id, @RequestBody PasswordChangeDTO passwordChangeDTO) {
+        userService.changePassword(id, passwordChangeDTO);
+        return ResponseEntity.ok("Password updated successfully.");
+    }
+
+    @GetMapping("/search")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserDTO> searchUsers(
+            @RequestParam(value = "username", required = false) String username,
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "role", required = false) String role) {
+        return userService.searchUsers(username, email, role);
+    }
+
+    @GetMapping("/me")
+    public UserDTO getCurrentUser() {
+        return userService.getCurrentUser();
+    }
+
 }
