@@ -1,5 +1,3 @@
----
-
 ## **User API Documentation**
 
 ### **1. Register User**
