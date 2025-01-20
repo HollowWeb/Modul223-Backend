@@ -38,18 +38,26 @@ public class UserController {
      */
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody @Valid UserCreateDTO userCreateDTO) {
+        // Create the user
         UserDTO registeredUser = userService.createUser(userCreateDTO);
 
+        // Generate JWT token
         String token = jwtUtil.generateToken(registeredUser.getUsername(), registeredUser.getRoles());
 
+        // Set Authorization header
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
 
+        // Prepare response body
         Map<String, Object> response = new HashMap<>();
         response.put("user", registeredUser);
-        response.put("message", "Registration successful");
+        response.put("message", "Registration and login successful");
 
-        return new ResponseEntity<>(response, headers, HttpStatus.OK);
+        //Just for debugging purposes nibba.
+        System.out.println("Generated JWT Token: Bearer " + token);
+
+
+        return new ResponseEntity<>(response, headers, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

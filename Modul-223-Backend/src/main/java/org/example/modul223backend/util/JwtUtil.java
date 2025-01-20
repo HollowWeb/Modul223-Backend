@@ -19,6 +19,20 @@ public class JwtUtil {
     private long expiration;
 
     public String generateToken(String username, Set<String> roles) {
+        if (username.contains("_")) {
+            throw new IllegalArgumentException("Username contains invalid characters for JWT.");
+        }
+        // Ensure roles are valid strings
+        roles.forEach(role -> {
+            if (!role.matches("^[a-zA-Z0-9]+$")) {
+                throw new IllegalArgumentException("Invalid role for JWT encoding: " + role);
+            }
+        });
+
+        //only for debugging purposes.
+        System.out.println("Username: " + username);
+        System.out.println("Roles: " + roles);
+
         return Jwts.builder()
                 .setSubject(username)
                 .claim("roles", roles) // Include roles as a claim
