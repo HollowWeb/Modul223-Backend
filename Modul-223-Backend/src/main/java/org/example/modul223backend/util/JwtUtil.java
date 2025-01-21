@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -46,8 +47,9 @@ public class JwtUtil {
         return getClaims(token).getSubject();
     }
 
-    public String extractRoles(String token) {
-        return (String) getClaims(token).get("roles");
+    public List<String> extractRoles(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("roles", List.class);
     }
 
     public boolean isTokenValid(String token, String username) {

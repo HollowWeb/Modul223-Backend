@@ -2,6 +2,7 @@ package org.example.modul223backend.Role;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +18,13 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public RoleDTO createRole(@RequestBody RoleDTO roleDTO) {
         return roleService.createRole(roleDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public List<RoleDTO> getAllRoles() {
         return roleService.getAllRoles();
