@@ -4,7 +4,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.example.modul223backend.Article.Article;
-import org.example.modul223backend.Article.ArticleDTO;
+import org.example.modul223backend.Article.DTO.ArticleDTO;
 import org.example.modul223backend.Article.ArticleRepository;
 import org.example.modul223backend.Article.ArticleServiceImpl;
 import org.example.modul223backend.User.User;

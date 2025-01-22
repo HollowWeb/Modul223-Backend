@@ -3,17 +3,14 @@ package org.example.modul223backend.Comment;
 
 import org.example.modul223backend.Article.Article;
 import org.example.modul223backend.Article.ArticleRepository;
-import org.example.modul223backend.Comment.CommentDTO;
-import org.example.modul223backend.Comment.Comment;
-import org.example.modul223backend.Comment.CommentRepository;
 import org.example.modul223backend.User.User;
 import org.example.modul223backend.User.UserRepository;
 import org.example.modul223backend.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -32,7 +29,8 @@ public class CommentServiceImpl implements CommentService {
         Article article = articleRepository.findById(commentDTO.getArticleId())
                 .orElseThrow(() -> new RuntimeException("Article not found"));
 
-        User user = userRepository.findById(commentDTO.getUserId())
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Comment parentComment = null;
@@ -46,24 +44,27 @@ public class CommentServiceImpl implements CommentService {
         return Mapper.mapToCommentDTO(comment);
     }
 
+
     @Override
     public List<CommentDTO> getCommentsByArticle(Long articleId) {
         List<Comment> comments = commentRepository.findByArticleId(articleId);
-        return comments.stream().map(Mapper::mapToCommentDTO).collect(Collectors.toList());
+        return comments.stream().map(Mapper::mapToCommentDTO).toList();
     }
 
     @Override
     public List<CommentDTO> getReplies(Long parentCommentId) {
         List<Comment> replies = commentRepository.findByParentCommentId(parentCommentId);
-        return replies.stream().map(Mapper::mapToCommentDTO).collect(Collectors.toList());
+        return replies.stream().map(Mapper::mapToCommentDTO).toList();
     }
 
     @Override
     public void deleteComment(Long id) {
-        if (!commentRepository.existsById(id)) {
-            throw new RuntimeException("Comment not found");
-        }
-        commentRepository.deleteById(id);
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        comment.setDeleted(true);
+        commentRepository.save(comment);
     }
+
 }
 

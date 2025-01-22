@@ -10,4 +10,5 @@ public interface ImageService {
     List<ImageDTO> getImagesByArticle(Long articleId);
     ImageDTO getImageById(Long id);
     void deleteImage(Long id);
+    String getImageUrl(Long imageId); // Generate a public URL for the image
 }

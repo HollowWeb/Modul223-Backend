@@ -11,8 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByArticleId(Long articleId); // Get comments by article
-    List<Comment> findByParentCommentId(Long parentCommentId); // Get replies to a comment
+    // only get not deleted comments
+    @Query("SELECT c FROM Comment c WHERE c.article.id = :articleId AND c.deleted = false")
+    List<Comment> findByArticleId(@Param("articleId") Long articleId);
+    @Query("SELECT c FROM Comment c WHERE c.parentComment.id = :parentCommentId AND c.deleted = false")
+    List<Comment> findByParentCommentId(@Param("parentCommentId") Long parentCommentId);
+
 
     @Modifying
     @Transactional

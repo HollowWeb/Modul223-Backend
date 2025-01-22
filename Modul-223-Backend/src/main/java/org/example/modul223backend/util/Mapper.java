@@ -1,7 +1,7 @@
 package org.example.modul223backend.util;
 
 import org.example.modul223backend.Article.Article;
-import org.example.modul223backend.Article.ArticleDTO;
+import org.example.modul223backend.Article.DTO.ArticleDTO;
 import org.example.modul223backend.Comment.Comment;
 import org.example.modul223backend.Comment.CommentDTO;
 import org.example.modul223backend.Image.Image;
@@ -15,6 +15,7 @@ import org.example.modul223backend.User.User;
 import org.example.modul223backend.Version.Version;
 import org.example.modul223backend.Version.VersionDTO;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,19 +46,27 @@ public class Mapper {
 
     // Convert Article Entity to DTO
     public static ArticleDTO mapToArticleDTO(Article article) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if (article == null) {
+            throw new IllegalArgumentException("Article cannot be null");
+        }
 
+        if (article.getCreatedBy() == null) {
+            throw new IllegalArgumentException("Article creator (User) cannot be null");
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return new ArticleDTO(
                 article.getArticleId(),
                 article.getTitle(),
                 article.getContent(),
-                article.getStatus().name(), // Convert ENUM to String
-                article.getCreatedBy().getId(),
-                article.getCreatedBy().getUsername(),
-                article.getCreatedAt().format(formatter),
-                article.getUpdatedAt().format(formatter)
-        );
+                article.getStatus() != null ? article.getStatus().name() : null, // Handle null ENUM
+                article.getTags().stream().map(Tag::toString).collect(Collectors.toSet()),
+                article.getCreatedAt() != null ? LocalDateTime.parse(article.getCreatedAt().format(formatter)) : null, // Handle potential nulls
+                article.getUpdatedAt() != null ? LocalDateTime.parse(article.getUpdatedAt().format(formatter)) : null,  // Handle potential nulls
+                article.getCreatedBy().getUsername()
+                );
     }
+
 
     // Convert Article DTO to Entity
     public static Article mapToArticleEntity(ArticleDTO articleDTO, User user) {
@@ -98,28 +107,28 @@ public class Mapper {
     // ============================
 
     public static ImageDTO mapToImageDTO(Image image) {
+        if (image == null) {
+            throw new IllegalArgumentException("Image cannot be null");
+        }
+
+        if (image.getArticle() == null) {
+            throw new IllegalArgumentException("Associated Article cannot be null in Image");
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return new ImageDTO(
                 image.getId(),
-                image.getArticle().getArticleId(),
+                image.getArticle().getArticleId(), // Ensure the article is not null before calling this
                 image.getFilename(),
-                image.getUploadedAt().format(formatter)
+                image.getMimeType(),
+                image.getSize(),
+                image.getUploadedAt() != null ? image.getUploadedAt().format(formatter) : null, // Handle potential nulls
+                Image.getImageUrl(image.getId())
         );
     }
 
+
     // Comment Mappers
-    public static CommentDTO mapToCommentDTO(Comment comment) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return new CommentDTO(
-                comment.getId(),
-                comment.getArticle().getArticleId(),
-                comment.getUser().getId(),
-                comment.getUser().getUsername(),
-                comment.getContent(),
-                comment.getParentComment() != null ? comment.getParentComment().getId() : null,
-                comment.getCreatedAt().format(formatter)
-        );
-    }
 
     public static Comment mapToCommentEntity(CommentDTO commentDTO, Article article, User user, Comment parentComment) {
         Comment comment = new Comment();
@@ -128,6 +137,19 @@ public class Mapper {
         comment.setContent(commentDTO.getContent());
         comment.setParentComment(parentComment);
         return comment;
+    }
+
+    public static CommentDTO mapToCommentDTO(Comment comment) {
+        return new CommentDTO(
+                comment.getId(),
+                comment.getArticle().getArticleId(),
+                comment.getUser().getId(),
+                comment.getUser().getUsername(),
+                comment.getContent(),
+                comment.getParentComment() != null ? comment.getParentComment().getId() : null,
+                comment.getParentComment() != null,
+                comment.getCreatedAt().toString()
+        );
     }
 
     // Version Mappers

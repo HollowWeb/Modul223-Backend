@@ -15,5 +15,5 @@ public class Tag {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String tagName; // Name of the tag (e.g., "Technology", "Science")
+    private String tagName;
 }

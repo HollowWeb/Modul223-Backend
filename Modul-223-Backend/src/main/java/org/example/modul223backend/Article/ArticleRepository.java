@@ -1,6 +1,5 @@
 package org.example.modul223backend.Article;
 
-import org.example.modul223backend.Article.Article;
 import org.example.modul223backend.Article.Article.Status;
 import org.example.modul223backend.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +22,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("UPDATE Article a SET a.deleted = true WHERE a.createdBy = :user")
     void softDeleteByUser(@Param("user") User user);
 
+    List<Article> findByTagName(String tag);
+
+    List<Article> searchByTitle(String title);
 }
