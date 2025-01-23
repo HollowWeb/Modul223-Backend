@@ -1,11 +1,15 @@
 package org.example.modul223backend.Article.DTO;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ArticleUpdateDTO {
     @NotBlank
     private String title;
@@ -17,10 +21,4 @@ public class ArticleUpdateDTO {
 
     private Set<String> tags; // List of tags
 
-    public ArticleUpdateDTO(String title, String content, String status, Set<String> tags) {
-        this.title = title;
-        this.content = content;
-        this.status = status;
-        this.tags = tags;
-    }
 }

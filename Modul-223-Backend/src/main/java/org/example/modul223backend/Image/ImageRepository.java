@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
-    List<Image> findByArticleId(Long articleId); // Get all images linked to an article
+    @Query("SELECT i FROM Image i WHERE i.article = :articleId")
+    List<Image> findByArticleId(@Param("articleId") long articleId); // Get all images linked to an article
     @Modifying
     @Transactional
     @Query(value = "UPDATE images i " +

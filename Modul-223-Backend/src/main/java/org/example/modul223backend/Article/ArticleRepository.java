@@ -22,7 +22,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("UPDATE Article a SET a.deleted = true WHERE a.createdBy = :user")
     void softDeleteByUser(@Param("user") User user);
 
-    List<Article> findByTagName(String tag);
+    @Query("SELECT a FROM Article a JOIN a.tags t WHERE t.tagName = :tagName")
+    List<Article> findByTagName(@Param("tagName") String tagName);
 
     List<Article> searchByTitle(String title);
 }

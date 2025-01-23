@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 
 public class Mapper {
 
+    private final  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     public static UserDTO mapToDTO(User user) {
         return new UserDTO(
                 user.getId(),
@@ -54,15 +56,20 @@ public class Mapper {
             throw new IllegalArgumentException("Article creator (User) cannot be null");
         }
 
+        Set<String> tagNames = article.getTags()
+                .stream()
+                .map(Tag::getTagName) // Extract only the tagName
+                .collect(Collectors.toSet());
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return new ArticleDTO(
                 article.getArticleId(),
                 article.getTitle(),
                 article.getContent(),
                 article.getStatus() != null ? article.getStatus().name() : null, // Handle null ENUM
-                article.getTags().stream().map(Tag::toString).collect(Collectors.toSet()),
-                article.getCreatedAt() != null ? LocalDateTime.parse(article.getCreatedAt().format(formatter)) : null, // Handle potential nulls
-                article.getUpdatedAt() != null ? LocalDateTime.parse(article.getUpdatedAt().format(formatter)) : null,  // Handle potential nulls
+                tagNames,
+                article.getCreatedAt() != null ? LocalDateTime.parse(article.getCreatedAt().format(formatter), formatter) : null, // Handle potential nulls
+                article.getUpdatedAt() != null ? LocalDateTime.parse(article.getUpdatedAt().format(formatter), formatter) : null,  // Handle potential nulls
                 article.getCreatedBy().getUsername()
                 );
     }
