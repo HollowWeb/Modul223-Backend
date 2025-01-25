@@ -6,6 +6,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entity class representing an Article.
+ * Articles can be stored as drafts, published, or archived, and include metadata such as creation and update timestamps.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -36,6 +40,10 @@ public class Article {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    /**
+     * Gets the ID of the article.
+     * @return the unique identifier of the article.
+     */
     public Long getId() {
         return articleId;
     }
@@ -49,12 +57,18 @@ public class Article {
     @Column(nullable = false)
     private boolean deleted = false;
 
+    /**
+     * Sets the `createdAt` and `updatedAt` timestamps before persisting the entity.
+     */
     @PrePersist
     protected void onCreate() {
         createdAt = updatedAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
 
+    /**
+     * Updates the `updatedAt` timestamp before updating the entity.
+     */
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();

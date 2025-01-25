@@ -10,6 +10,9 @@ import org.example.modul223backend.Role.Role;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Includes the transferable data for the user creation.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

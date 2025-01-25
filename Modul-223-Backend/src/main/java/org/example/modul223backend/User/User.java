@@ -8,6 +8,11 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Represents an Entity in the DB.
+ * Setting the different columns and its annotations also
+ * with its attributes.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -28,6 +33,10 @@ public class User {
     @Column(nullable = false)
     private String passwordHash;
 
+    /**
+     * Connected with the user_roles table.
+     * Having a many to many relationship together.
+     */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",
@@ -45,11 +54,17 @@ public class User {
     @Column(nullable = false)
     private boolean deleted = false;
 
+    /**
+     * Specifies the current date time when an user gets created.
+     */
     @PrePersist
     protected void onCreate() {
         createdAt = updatedAt = LocalDateTime.now();
     }
 
+    /**
+     * Updates the current date time when an user's info gets updated.
+     */
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();

@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.Set;
 
+/**
+ * Includes transferable data for the user admin update.
+ */
 @Data
 public class UserAdminUpdateDTO {
     private String username;

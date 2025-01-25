@@ -2,6 +2,10 @@ package org.example.modul223backend.Article;
 
 import lombok.*;
 
+/**
+ * Data Transfer Object (DTO) for the Article entity.
+ * Represents the data of an article to be transferred between the client and server.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

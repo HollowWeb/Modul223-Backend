@@ -6,10 +6,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Main application class for the Modul223 backend.
+ * Handles application startup and configuration loading.
+ */
 @RestController
 @SpringBootApplication
 public class Modul223BackendApplication {
 
+    /**
+     * The main entry point of the application.
+     * Loads environment variables, sets system properties, and starts the Spring Boot application.
+     * @param args command-line arguments, (when given :).
+     */
     public static void main(String[] args) {
         Dotenv dotenv = Dotenv.load();
         System.setProperty("DB_HOST", dotenv.get("DB_HOST"));

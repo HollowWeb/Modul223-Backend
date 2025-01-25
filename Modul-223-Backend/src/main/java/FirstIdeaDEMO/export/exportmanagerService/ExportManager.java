@@ -1,8 +1,8 @@
-package export.exportmanagerService;
+package FirstIdeaDEMO.export.exportmanagerService;
 
-import export.exportmanagerInterface.ExportCriteria;
-import export.exportmanagerInterface.ExportResponse;
-import export.exportmanagerInterface.IExportManager;
+import FirstIdeaDEMO.export.exportmanagerInterface.ExportCriteria;
+import FirstIdeaDEMO.export.exportmanagerInterface.ExportResponse;
+import FirstIdeaDEMO.export.exportmanagerInterface.IExportManager;
 
 /**
  * Manages the export to a pdf file.
