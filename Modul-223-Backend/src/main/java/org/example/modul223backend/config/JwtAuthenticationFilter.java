@@ -7,12 +7,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.modul223backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -27,18 +31,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
-            String username = jwtUtil.extractUsername(token);
+            try {
+                String username = jwtUtil.extractUsername(token);
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    if (jwtUtil.isTokenValid(token, username)) {
+                        List<String> roles = jwtUtil.extractRoles(token); // Add this method in jwtUtil
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                if (jwtUtil.isTokenValid(token, username)) {
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            username, null, null); // Set roles if needed
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                        // Convert roles to GrantedAuthority
+                        List<GrantedAuthority> authorities = roles.stream()
+                                .map(SimpleGrantedAuthority::new) // Convert each role into a SimpleGrantedAuthority
+                                .collect(Collectors.toList());
+
+                        // Create an authentication token with roles
+                        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                                username, null, authorities);
+
+                        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        // Set authentication in the security context
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
                 }
+            } catch (Exception e) {
+                // Handle invalid token exceptions
+                System.out.println("Invalid JWT Token: " + e.getMessage());
             }
         }
 
+        // Continue the filter chain
         chain.doFilter(request, response);
     }
+
 }

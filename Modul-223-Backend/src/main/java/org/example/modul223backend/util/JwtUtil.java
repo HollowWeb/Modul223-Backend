@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -19,6 +20,20 @@ public class JwtUtil {
     private long expiration;
 
     public String generateToken(String username, Set<String> roles) {
+        if (username.contains("_")) {
+            throw new IllegalArgumentException("Username contains invalid characters for JWT.");
+        }
+        // Ensure roles are valid strings
+        roles.forEach(role -> {
+            if (!role.matches("^[a-zA-Z0-9]+$")) {
+                throw new IllegalArgumentException("Invalid role for JWT encoding: " + role);
+            }
+        });
+
+        //only for debugging purposes.
+        System.out.println("Username: " + username);
+        System.out.println("Roles: " + roles);
+
         return Jwts.builder()
                 .setSubject(username)
                 .claim("roles", roles) // Include roles as a claim
@@ -32,8 +47,9 @@ public class JwtUtil {
         return getClaims(token).getSubject();
     }
 
-    public String extractRoles(String token) {
-        return (String) getClaims(token).get("roles");
+    public List<String> extractRoles(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("roles", List.class);
     }
 
     public boolean isTokenValid(String token, String username) {
