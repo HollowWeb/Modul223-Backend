@@ -18,5 +18,5 @@ public interface UserService {
     void changePassword(Long id, PasswordChangeDTO passwordChangeDTO);
     List<UserDTO> searchUsers(String username, String email, String role);
     UserDTO getCurrentUser();
-
+    void changePasswordAdmin(Long id, String password);
 }

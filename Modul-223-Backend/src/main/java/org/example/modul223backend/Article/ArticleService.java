@@ -13,4 +13,8 @@ public interface ArticleService {
     void deleteArticle(Long id);
     List<ArticleDTO> listArticles(String tag, String status, String search);
     ArticleDTO approveArticle(Long id);
+    List<ArticleDTO> getArticlesByUserId(Long userId);
+    List<ArticleDTO> getPendingArticles();
+    void denyArticle(Long id);
+
 }

@@ -5,6 +5,7 @@ import org.example.modul223backend.Article.DTO.ArticleCreateDTO;
 import org.example.modul223backend.Article.DTO.ArticleDTO;
 import org.example.modul223backend.Article.DTO.ArticleUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -82,5 +83,27 @@ public class ArticleController {
         ArticleDTO approvedArticle = articleService.approveArticle(id);
         return ResponseEntity.ok(approvedArticle);
     }
+
+    /**
+     * Get all articles created by a specific user.
+     */
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ArticleDTO>> getArticlesByUserId(@PathVariable Long userId) {
+        List<ArticleDTO> articles = articleService.getArticlesByUserId(userId);
+        return ResponseEntity.ok(articles);
+    }
+
+    @GetMapping("/pending")
+    public ResponseEntity<List<ArticleDTO>> getPendingArticles() {
+        List<ArticleDTO> articles = articleService.getPendingArticles();
+        return ResponseEntity.ok(articles);
+    }
+
+    @PutMapping("/{id}/deny")
+    public HttpStatus denyArticle(@PathVariable Long id) {
+        articleService.denyArticle(id);
+        return HttpStatus.OK;
+    }
+
 
 }

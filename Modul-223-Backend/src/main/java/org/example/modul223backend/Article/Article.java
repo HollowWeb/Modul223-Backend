@@ -68,7 +68,8 @@ public class Article {
         DRAFT,
         PUBLISHED,
         PENDING_APPROVAL,
-        ARCHIVED
+        ARCHIVED,
+        DENIED
     }
 
 }

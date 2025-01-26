@@ -42,7 +42,7 @@ public class UserController {
         UserDTO registeredUser = userService.createUser(userCreateDTO);
 
         // Generate JWT token
-        String token = jwtUtil.generateToken(registeredUser.getUsername(), registeredUser.getRoles());
+        String token = jwtUtil.generateToken(registeredUser.getUsername(), registeredUser.getId(), registeredUser.getRoles());
 
         // Set Authorization header
         HttpHeaders headers = new HttpHeaders();
@@ -136,6 +136,13 @@ public class UserController {
     @GetMapping("/me")
     public UserDTO getCurrentUser() {
         return userService.getCurrentUser();
+    }
+
+    @PostMapping("/{id}/password")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> adminChangePassword(@PathVariable Long id, @RequestBody PasswordChangeAdminDTO passwordChangeAdminDTO) {
+        userService.changePasswordAdmin(id, passwordChangeAdminDTO.getPassword());
+        return ResponseEntity.ok("Password updated successfully.");
     }
 
 }

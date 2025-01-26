@@ -11,10 +11,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ArticleUpdateDTO {
-    @NotBlank
+
     private String title;
 
-    @NotBlank
+
     private String content; // Markdown content
 
     private String status; // Status (draft, published, archived)

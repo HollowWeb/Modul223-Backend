@@ -197,4 +197,49 @@ public class ArticleServiceImpl implements ArticleService {
         return Mapper.mapToArticleDTO(article);
     }
 
+    @Override
+    public List<ArticleDTO> getArticlesByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found."));
+
+        // Retrieve articles created by the user and not deleted
+        List<Article> articles = articleRepository.findByCreatedById(userId)
+                .stream()
+                .filter(article -> !article.isDeleted())
+                .toList();
+
+        return articles.stream().map(Mapper::mapToArticleDTO).toList();
+    }
+
+    @Override
+    public List<ArticleDTO> getPendingArticles() {
+        return  articleRepository.findByStatus(Article.Status.PENDING_APPROVAL).stream().map(Mapper::mapToArticleDTO).toList();
+    }
+
+    @Override
+    public void denyArticle(Long id) {
+
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new ArticleNotFoundException("Article not found."));
+
+        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userRepository.findByUsernameAndDeletedFalse(currentUsername)
+                .orElseThrow(() -> new UserNotFoundException("Current user not found."));
+
+        boolean isAdminOrEditor = currentUser.getRoles().stream()
+                .anyMatch(role -> role.getRoleName().equals(RoleConstants.ADMIN) ||
+                        role.getRoleName().equals(RoleConstants.EDITOR));
+
+        if (!isAdminOrEditor) {
+            throw new UnauthorizedActionException("Only admins or editors can deny articles.");
+        }
+
+        if (article.getStatus() != Article.Status.PENDING_APPROVAL) {
+            throw new IllegalArgumentException("Only articles with status 'PENDING_APPROVAL' can be denied.");
+        }
+
+        article.setStatus(Article.Status.DENIED);
+        articleRepository.save(article);
+    }
+
 }

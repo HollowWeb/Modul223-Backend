@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
         Set<String> roles = user.getRoles().stream()
                 .map(Role::getRoleName)
                 .collect(Collectors.toSet());
-        return jwtUtil.generateToken(user.getUsername(), roles);
+        return jwtUtil.generateToken(user.getUsername(),user.getId(), roles);
     }
 
     @Transactional
@@ -276,6 +276,21 @@ public class UserServiceImpl implements UserService {
         User currentUser = userRepository.findByUsernameAndDeletedFalse(currentUsername)
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessages.USER_NOT_FOUND));
         return Mapper.mapToDTO(currentUser);
+    }
+
+    @Override
+    public void changePasswordAdmin(Long id, String password) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + id));
+
+        // Encrypt the password
+        String encodedPassword = passwordEncoder.encode(password);
+
+        // Update the user's password
+        user.setPasswordHash(encodedPassword);
+
+        userRepository.save(user);
+
     }
 
 

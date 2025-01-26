@@ -19,7 +19,7 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(String username, Set<String> roles) {
+    public String generateToken(String username, Long userId, Set<String> roles) {
         if (username.contains("_")) {
             throw new IllegalArgumentException("Username contains invalid characters for JWT.");
         }
@@ -30,18 +30,21 @@ public class JwtUtil {
             }
         });
 
-        //only for debugging purposes.
+        // Only for debugging purposes
         System.out.println("Username: " + username);
+        System.out.println("User ID: " + userId);
         System.out.println("Roles: " + roles);
 
         return Jwts.builder()
                 .setSubject(username)
+                .claim("userId", userId) // Include userId as a claim
                 .claim("roles", roles) // Include roles as a claim
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
+
 
     public String extractUsername(String token) {
         return getClaims(token).getSubject();
