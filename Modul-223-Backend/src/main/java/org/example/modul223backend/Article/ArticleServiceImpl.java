@@ -242,4 +242,9 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.save(article);
     }
 
+    @Override
+    public List<ArticleDTO> getAllArticles() {
+        return articleRepository.findAllActiveAndPublished().stream().map(Mapper::mapToArticleDTO).toList();
+    }
+
 }

@@ -1,7 +1,6 @@
 package org.example.modul223backend.User;
 
 import jakarta.validation.Valid;
-import org.example.modul223backend.Role.RoleConstants;
 import org.example.modul223backend.User.DTO.*;
 import org.example.modul223backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,6 +142,11 @@ public class UserController {
     public ResponseEntity<String> adminChangePassword(@PathVariable Long id, @RequestBody PasswordChangeAdminDTO passwordChangeAdminDTO) {
         userService.changePasswordAdmin(id, passwordChangeAdminDTO.getPassword());
         return ResponseEntity.ok("Password updated successfully.");
+    }
+
+    @GetMapping("/token/valid")
+    public ResponseEntity<String> validToken() {
+        return ResponseEntity.ok("Token is valid.");
     }
 
 }

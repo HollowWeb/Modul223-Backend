@@ -17,4 +17,5 @@ public interface ArticleService {
     List<ArticleDTO> getPendingArticles();
     void denyArticle(Long id);
 
+    List<ArticleDTO> getAllArticles();
 }

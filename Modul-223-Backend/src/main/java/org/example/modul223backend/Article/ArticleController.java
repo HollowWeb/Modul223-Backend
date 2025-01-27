@@ -105,5 +105,11 @@ public class ArticleController {
         return HttpStatus.OK;
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<ArticleDTO>> getAllArticles() {
+        List<ArticleDTO> articles = articleService.getAllArticles();
+        return ResponseEntity.ok(articles);
+    }
+
 
 }

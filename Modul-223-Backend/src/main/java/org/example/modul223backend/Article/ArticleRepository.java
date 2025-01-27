@@ -17,6 +17,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     @Query("SELECT a FROM Article a WHERE a.deleted = false")
     List<Article> findAllActive();
 
+    @Query("SELECT a FROM Article a WHERE a.deleted = false AND a.status = 'PUBLISHED'")
+    List<Article> findAllActiveAndPublished();
+
     @Modifying
     @Transactional
     @Query("UPDATE Article a SET a.deleted = true WHERE a.createdBy = :user")
