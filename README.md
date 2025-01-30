@@ -21,12 +21,14 @@ In dieser Dokumentation erläutern wir unser Projekt genauer und geben euch eine
 
 ## Architektur unserer Anwendung
 
-![[Mdl233-Architecture.png]]
+Hier zur Darstellung der Architektur:
+https://github.com/HollowWeb/Modul223-Backend/blob/Documentation/Modul-223-Backend/docs/images/Mdl233-Architecture.png
 
 Für neuankömmlige die sich noch nicht so vertraut sind mit der Springboot Architektur haben wir uns die Zeit genommen noch eine detailliertere Anatomie mit simplen Code-Beispielen zu erstellen.
 
 ![[Springboot_architecture_explanation.png]]
-Das ganze findet ihr auch im Projekt unter Docs/images/sb_explanation"
+Das ganze findet ihr auch im Projekt unter 
+https://github.com/HollowWeb/Modul223-Backend/blob/Documentation/Modul-223-Backend/docs/images/Springboot_architecture_explanation.png
 
 ## Hands on installation:
 
@@ -76,7 +78,8 @@ Bevor wir folgende Sicherheitsthemen ansprechen, haben wir uns auch hier die Zei
 
 Folgendes Bild erklärt einen typischen Ablauf wie z.B das registrieren eines neuen Users und wie alle Layers und gewisse Komponente miteinander agieren, was zu was geschickt wird etc:
 
-![[SecurityFilters.png]]
+Hier noch zur Aufklärung:
+https://github.com/HollowWeb/Modul223-Backend/blob/Documentation/Modul-223-Backend/docs/images/SecurityFilters.png
 
 ## FilterChain:
 
