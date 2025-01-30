@@ -1,3 +1,20 @@
+# Inhaltsverzeichnis:
+- [Übersicht](#übersicht)
+- [Anforderungsanalyse](#anforderungsanalyse)
+- [Benutzte Technologien](#benutzte-technologien)
+- [Architektur unserer Anwendung](#architektur-unserer-anwendung)
+- [Hands on Installation](#hands-on-installation)
+- [Repository klonen](#repository-klonen)
+- [Datenbank Konfiguration](#datenbank-konfiguration)
+- [Datenbank Schema](#datenbank-schema)
+- [API Endpunkte](#api-endpunkte)
+- [Rollen spezifische Endpoints](#rollen-spezifische-endpoints)
+- [Abgesicherte Endpoints](#abgesicherte-endpoints)
+- [Spring Security Crash Kurs](#spring-security-crash-kurs)
+- [FilterChain](#filterchain)
+- [Authentifizierung](#authentifizierung)
+- [Registrieren eines Benutzers](#registrieren-eines-benutzers)
+- [Tagesjournale](#tagesjournale)
 
 ## Übersicht
 
@@ -11,24 +28,42 @@ Ergo: Wiederholtes aber dazu noch die Implementation eines Frontends dazu. (Nich
 
 In dieser Dokumentation erläutern wir unser Projekt genauer und geben euch einen **kleinen Einblick** in die umgesetzten Funktionen. Bitte beachtet, dass sich diese Dokumentation **ausschließlich auf das Backend** bezieht. Für weitere Informationen, insbesondere zum Frontend, siehe bitte hier: (_LINK ZUM README.MD vom Frontend falls nicht möglich, dann sein lassen!).
 
+## Anforderungsanalyse: 
+Da wir für diese Projekt keine echten Stakeholder noch sonstige echte Anforderungen (ausser die für unsere Doku) erhalten haben, waren wir ziemlich flexibel und konnten somit die Anforderungen, die bei `Issues` zu finden sind, selbst entscheiden.
+
+**Hier noch kurz auf einen Blick ein paar Anforderungen:**
+
+**Anforderung:** As a user, I want to create a new wiki page, So, I can document and share my knowledge.
+**Akzeptanzkriterie:** Assuming Creating a new wiki page If I close the app. Then The page should still exist.
+
+**Anforderung:** As an **admin**, I want to manage user **roles** and permissions, So, I can ensure appropriate access and maintain security.
+**Akzeptanzkriterie:** Assuming Another user has no delete rights. If He would try to delete a page. Then The system should deny such behavior.
+
+**Anforderung:** As an admin, I want to view analytics about article views and edits, so I can monitor engagement and contributions.
+**Akzeptanzkriterien:** Assuming I want an overview of my group to know who is working on which note. If I would use the “analytics documentator”. Then I would get a snapshot of the information as a pdf file.
+
+weitere User Stories wie auch ihre Akzeptanzkriterien finden sie hier: 
+[Issues · HollowWeb/Modul223-Backend](https://github.com/HollowWeb/Modul223-Backend/issues)
 ## Benutzte Technologien: 
-- Java 21 
-- Spring Boot
-- Spring Security mit JWT Authentifikation
-- Spring DATA JPA 
-- MYSQL
-- etc.
+- Java 21, Unsere Entwicklungsumgebung
+- Spring Boot, das zu verwendete Framework 
+- Spring Security mit JWT Authentifikation, die zu verwendete Sicherheitsimplementation
+- Spring DATA JPA, weiteres datenspezifisches Framework
+- MYSQL, Datenbank
+- ByCrypt, entschlüsselungs-hash Verfahren
 
 ## Architektur unserer Anwendung
 
-Hier zur Darstellung der Architektur:
+![[Mdl233-Architecture.png]]
 https://github.com/HollowWeb/Modul223-Backend/blob/Documentation/Modul-223-Backend/docs/images/Mdl233-Architecture.png
 
 Für neuankömmlige die sich noch nicht so vertraut sind mit der Springboot Architektur haben wir uns die Zeit genommen noch eine detailliertere Anatomie mit simplen Code-Beispielen zu erstellen.
 
-![[Springboot_architecture_explanation.png]]
 Das ganze findet ihr auch im Projekt unter 
 https://github.com/HollowWeb/Modul223-Backend/blob/Documentation/Modul-223-Backend/docs/images/Springboot_architecture_explanation.png
+
+![[Springboot_architecture_explanation.png]]
+Das ganze findet ihr auch im Projekt unter Docs/images/sb_explanation"
 
 ## Hands on installation:
 
@@ -56,13 +91,13 @@ spring.sql.init.mode=always
 
 ### Datenbank Schema
 
-Hier eine detailliertere Modellierung unserer Datenbank Schematas : Modul-223-Backend/Project Specification/ERD_V1.png
+Hier eine detailliertere Modellierung unserer Datenbank Schematas : [Modul223-Backend/Modul-223-Backend/Project Specification/ERD_V1.png at Documentation · HollowWeb/Modul223-Backend](https://github.com/HollowWeb/Modul223-Backend/blob/Documentation/Modul-223-Backend/Project%20Specification/ERD_V1.png)
 
 ## API Endpunkte: 
 Hier werden folgende API- Endpunkte aufgelistet die auch aktiv zur Verwendung gekommen sind, bitte entschuldigt das wir nicht alle Endpoints aufgezählt haben, dies würde sonst den Rahmen dieser Dokumentation sprengen.
 
 #### Rollen spezifische Endpoints:
-- **URL:** `POST /api/users/register`:  Beschreibung: Registriert einen neuen Benutzer mit der standard Rolle "User"
+- **URL:** `POST /api/users/register`: Registriert einen neuen Benutzer mit der standard Rolle "User"
 - **URL:** `POST /api/users/login`: Authentifiziert den Benutzer. 
 
 (Uns ist bewusst das dieses Vorgehen nicht gerade best practice ist. Unser Hauptgedanke war, das registrieren zu optimieren/ schneller zu machen und gleich den JWT Token mit den dazugehörigen claims auszustellen.)
@@ -78,8 +113,7 @@ Bevor wir folgende Sicherheitsthemen ansprechen, haben wir uns auch hier die Zei
 
 Folgendes Bild erklärt einen typischen Ablauf wie z.B das registrieren eines neuen Users und wie alle Layers und gewisse Komponente miteinander agieren, was zu was geschickt wird etc:
 
-Hier noch zur Aufklärung:
-https://github.com/HollowWeb/Modul223-Backend/blob/Documentation/Modul-223-Backend/docs/images/SecurityFilters.png
+![[SecurityFilters.png]]
 
 ## FilterChain:
 
@@ -169,8 +203,92 @@ public ResponseEntity<Object> registerUser(@RequestBody @Valid UserCreateDTO use
 ```
 
 
-**TODO**
-- Bilder in projekt einfügen (docs/images)
-- Bilder richtig einsetzen
-- weitere erwähnenswerte Themen dokumentieren
-- Tagesjournal erstellen und einfügen.
+# Tagesjournale:
+
+Um es einfacher für die Bewertung zu machen führen wir hier unser persönliches Tagesjournal vom **Backend** und vom **Frontend**.
+
+## Zen Zalapski & Yoel Arcos:
+Beispiel: 
+Datum: 01.01.2025
+Zeit: 14:00-14:30
+Personen: **Zen, Yoel**
+Tätigkeiten: 
+- Erste Kickoff Besprechung
+- Taktikbesprechung
+- Erste Design Erstellungen und Validierungen.
+- Use case erstellung
+- Workflow Aufzeichnungen.
+
+Nächste Schritte: 
+- Projektstruktur erstellen.
+
+
+## Yoel Arcos:
+Datum: 03.01.2025 
+Zeit: 12:00-13:00
+Tätigkeiten: 
+- Vertical slices code implementieren (Grundstruktur-Version von erster Design-Besprechung)
+
+Datum: 11.01.2025 
+Zeit: 14:00-15:00 
+Tätigkeiten: 
+- Webconfig cors Konfiguration für Request-anfragen von aussen zu erlauben
+- Tests geschrieben für den Artikel teil.
+
+Datum: 13.01.2025 
+Zeit: 14:00-15:00
+Tätigkeiten:
+- Arbeiten am Frontend (Article View) erstellt
+- Style css (article page)
+- Fetch methode eingerichtet
+- Kommunikation zum Backend erstellt. (Backend calls)
+
+Datum: 20.01.2025 
+Zeit: 19:00-21:00
+Tätigkeiten:
+- User Registrations Logik implementiert
+- User Registrations UI (view) erstellt.
+- Debugging Fehlersuche.
+- Tokengenerierung implementiert.
+- CORS Fehler Behebung.
+
+Datum: 21.01.2025 
+Zeit: 20:00-21:00
+Tätigkeiten:
+- Authentication Filter Behebung
+- Erstellung der geschützten Endpoints 
+- Speichern des Tokens vom Backend im Frontend 
+- Erstellung geschützter Pfade im Frontend
+- Redirektion von erfolgreichem Login (frontend)
+- Redirektion von unauthoriziertem Zugriff (Frontend)
+
+Datum: 25.01.2025 
+Zeit: 20:00-21:00
+Tätigkeiten:
+- Authentication Filter Behebung
+- Erstellung der geschützten Endpoints (Pfade im Frontend)
+- Speichern des Tokens im Frontend 
+- Weitere routes implementiert
+- Klassen dokumentation erstellt.
+
+
+Datum: 29.01.2025 
+Zeit: 16:00-19:00
+Tätigkeiten:
+- Projekt Doku erstellt.
+
+
+## Zen Zalapski:
+//Rap da ine bro
+
+
+TODO: 
+- 2 Unit tests im backend implementieren
+- Diese dann hier dokumentieren (Test abschnitt in Doku erstellen)
+- Ergebnis screenshotten und in docs/images
+
+
+
+
+
+
