@@ -28,4 +28,10 @@ public class UserCreateDTO {
     private String password;
 
     private Set<Role> roles = new HashSet<>();
+
+    public UserCreateDTO(String testUser, String mail, String password123) {
+        this.username = testUser;
+        this.email = mail;
+        this.password = password123;
+    }
 }
