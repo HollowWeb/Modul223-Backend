@@ -45,12 +45,20 @@ Da wir für diese Projekt keine echten Stakeholder noch sonstige echte Anforderu
 weitere User Stories wie auch ihre Akzeptanzkriterien finden sie hier: 
 [Issues · HollowWeb/Modul223-Backend](https://github.com/HollowWeb/Modul223-Backend/issues)
 ## Benutzte Technologien: 
+
+### Frontend
 - Java 21, Unsere Entwicklungsumgebung
 - Spring Boot, das zu verwendete Framework 
 - Spring Security mit JWT Authentifikation, die zu verwendete Sicherheitsimplementation
 - Spring DATA JPA, weiteres datenspezifisches Framework
 - MYSQL, Datenbank
 - ByCrypt, entschlüsselungs-hash Verfahren
+
+### Backend
+- Vite + React: Framework used in frontend.
+- react-markdown: Used to render markdown in realtime.
+- Vitest: Used for automated UI tests.
+- React Router: Handels client-side react routing.
 
 ## Architektur unserer Anwendung
 
@@ -279,13 +287,99 @@ Tätigkeiten:
 
 
 ## Zen Zalapski:
-//Rap da ine bro
+
+Datum: 11.01.2025 
+Zeit: 4h
+Tätigkeiten:
+- Fixed Application Properties to correctly build connection with DB.
+- Added a .env file.
+- Added JWT. 
+
+Datum: 12.01.2025 
+Zeit: 2h
+Tätigkeiten:
+-  Fixed JWT handling in backend.
+
+Datum: 14.01.2025 
+Zeit: 1h
+Tätigkeiten:
+- Added new User Endpoints.
+
+Datum: 16.01.2025 
+Zeit: 3h
+Tätigkeiten:
+- Added new User Endpoints.
+
+Datum: 18.01.2025 
+Zeit: 7h
+Tätigkeiten:
+- Added last planned User Endpoints.
+- Tests worked successfully.
+- Needed to debug some endpoint to get wanted result.
+
+Datum: 21.01.2025 
+Zeit: 4h
+Tätigkeiten:
+- Started adding further endpoint for article, tag. 
+
+Datum: 22.01.2025 
+Zeit: 3h
+Tätigkeiten:
+- Finish adding endpoint for article, tag. 
+
+Datum: 23.01.2025 
+Zeit: 5h
+Tätigkeiten:
+- Tested debugged and fixed the new endpoints. 
+- Added Endpoint Documentation for Frontend Development.
+
+Datum: 26.01.2025 
+Zeit: 7h
+Tätigkeiten:
+- Started Implementing Frontend.
+- Had to add some more User EndPoints to get full functionality.
+- Merged Other Branches into Develop.
+- Added Pages CreateArticle, viewArticle, editArticle, userManagement and tag creation.
+- Also added styles DARK/LIGHT.
 
 
-TODO: 
-- 2 Unit tests im backend implementieren
-- Diese dann hier dokumentieren (Test abschnitt in Doku erstellen)
-- Ergebnis screenshotten und in docs/images
+Datum: 28.01.2025 
+Zeit: 4h
+Tätigkeiten:
+- Finished the pages on the frontend.
+- Needed to add some more function in the backend.
+	- New endpoints.
+	- New DTO
+	- Changed Mapping
+
+Datum: 29.01.2025 
+Zeit:  1h
+Tätigkeiten:
+- Tried to host DB remote.
+
+Datum: 30.01.2025 
+Zeit:  4h
+Tätigkeiten:
+- Added some simple code doc to frontend.
+- Added UI test for Nav, Home, MyArticles, Profile.
+- ReadME now has a small list of used technologies in frontend.
+
+Datum: 31.01.2025 
+Zeit:  2h
+Tätigkeiten:
+- Wrote Journal.
+- Added used Frontend tech to README
+
+## Hilfestellungen:
+
+Während der Entwicklung des Projekts stiessen wir auf verschiedene noch unbekannte Herausforderungen. Um die Arbeit zu beschleunigen und nicht zu viel Zeit mit Debugging oder allgemeiner Fehlersuche zu verbringen (was leider doch der Fall war), holten wir uns in bestimmten Fällen Unterstützung von Chatgpt.
+
+*Auflistung der Hilfestellungen:*
+- *Fehlersuche & Debugging:* Beim *JWT-Token-Handling* und der *Rollenverwaltung* sind wir auf einige Probleme gestoßen, die wir mit zusätzlicher Hilfe lösen konnten.
+- *CORS-Konfiguration:* Bei der richtigen *WebConfig-Erstellung* für externe Anfragen haben wir uns Anregungen/Tipps und Verbesserungsmöglichkeiten geholt.
+- *Security & Safeguards:* Wir haben uns mit verschiedenen *Sicherheitskonzepten und Schutzmaßnahmen* auseinandergesetzt, um auch neue Arten der Sicherheitsimplementation zu erlernen und beurteilen zu können welche uns am besten passt.
+- *Frontend-Design:* Einen Grossteil des *CSS-Stylings* habe wir durch Inspirationen ergänzt und übernommen.
+- *Spring Boot Security:* Wir haben uns mit *effektiven Sicherheitskonzepten* und Best Practices auseinandergesetzt, um die Anwendung so (realitätsnahe wie möglich) zu gestalten. (Natürlich nur begrenzt, da uns die Zeit davon flog).
 
 
 
