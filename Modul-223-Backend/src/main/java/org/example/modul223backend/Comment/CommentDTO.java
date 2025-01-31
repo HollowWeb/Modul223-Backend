@@ -12,5 +12,7 @@ public class CommentDTO {
     private String username; // Username of commenter
     private String content;
     private Long parentCommentId; // Optional parent comment
+    private boolean isReply;
     private String createdAt;
+
 }

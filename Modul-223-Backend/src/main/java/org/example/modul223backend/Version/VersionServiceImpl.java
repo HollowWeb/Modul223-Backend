@@ -24,7 +24,7 @@ public class VersionServiceImpl implements VersionService {
                 .orElseThrow(() -> new RuntimeException("Article not found"));
 
         // Determine the next version number
-        int nextVersion = versionRepository.findByArticleIdOrderByVersionNumberDesc(article.getId())
+        int nextVersion = versionRepository.findByArticleIdOrderByVersionNumberDesc(article.getArticleId())
                 .stream()
                 .mapToInt(Version::getVersionNumber)
                 .max()

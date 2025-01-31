@@ -1,6 +1,7 @@
 package org.example.modul223backend.Comment;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,11 +10,15 @@ import java.util.List;
 @RequestMapping("/api/comments")
 public class CommentController {
 
-    @Autowired
-    private CommentService commentService;
+
+    private final CommentService commentService;
+
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @PostMapping
-    public CommentDTO addComment(@RequestBody CommentDTO commentDTO) {
+    public CommentDTO addComment(@RequestBody @Valid CommentDTO commentDTO) {
         return commentService.addComment(commentDTO);
     }
 
@@ -28,8 +33,10 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @commentSecurity.isOwner(authentication, #id)")
     public void deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
     }
 }
+
 

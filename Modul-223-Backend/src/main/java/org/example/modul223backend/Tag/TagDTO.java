@@ -7,6 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 public class TagDTO {
     private Long id;
-    private String tagName; // Name of the tag
+    private String tagName;
 }
 

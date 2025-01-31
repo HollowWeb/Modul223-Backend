@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -18,9 +19,25 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(String username, Set<String> roles) {
+    public String generateToken(String username, Long userId, Set<String> roles) {
+        if (username.contains("_")) {
+            throw new IllegalArgumentException("Username contains invalid characters for JWT.");
+        }
+        // Ensure roles are valid strings
+        roles.forEach(role -> {
+            if (!role.matches("^[a-zA-Z0-9]+$")) {
+                throw new IllegalArgumentException("Invalid role for JWT encoding: " + role);
+            }
+        });
+
+        // Only for debugging purposes
+        System.out.println("Username: " + username);
+        System.out.println("User ID: " + userId);
+        System.out.println("Roles: " + roles);
+
         return Jwts.builder()
                 .setSubject(username)
+                .claim("userId", userId) // Include userId as a claim
                 .claim("roles", roles) // Include roles as a claim
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
@@ -28,12 +45,14 @@ public class JwtUtil {
                 .compact();
     }
 
+
     public String extractUsername(String token) {
         return getClaims(token).getSubject();
     }
 
-    public String extractRoles(String token) {
-        return (String) getClaims(token).get("roles");
+    public List<String> extractRoles(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("roles", List.class);
     }
 
     public boolean isTokenValid(String token, String username) {

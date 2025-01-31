@@ -1,14 +1,11 @@
 package org.example.modul223backend.Role;
 
-import org.example.modul223backend.Role.RoleDTO;
-import org.example.modul223backend.Role.Role;
-import org.example.modul223backend.Role.RoleRepository;
+
 import org.example.modul223backend.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -31,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleDTO> getAllRoles() {
         List<Role> roles = roleRepository.findAll();
-        return roles.stream().map(Mapper::mapToRoleDTO).collect(Collectors.toList());
+        return roles.stream().map(Mapper::mapToRoleDTO).toList();
     }
 
     @Override

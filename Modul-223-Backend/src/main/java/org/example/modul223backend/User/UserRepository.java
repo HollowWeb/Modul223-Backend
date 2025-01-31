@@ -20,4 +20,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findActiveById(@Param("id") Long id);
 
     Optional<User> findByUsernameAndDeletedFalse(String username);
+
+    @Query("SELECT u FROM User u " +
+            "WHERE (:username IS NULL OR u.username LIKE %:username%) " +
+            "AND (:email IS NULL OR u.email LIKE %:email%) " +
+            "AND (:role IS NULL OR EXISTS (SELECT r FROM u.roles r WHERE r.roleName = :role)) " +
+            "AND u.deleted = false")
+    List<User> searchUsers(
+            @Param("username") String username,
+            @Param("email") String email,
+            @Param("role") String role);
+
 }

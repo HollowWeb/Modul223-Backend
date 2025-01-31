@@ -17,16 +17,22 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "article_id", nullable = false) // Foreign key to Article
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id", nullable = true) // Nullable to support independent uploads
     private Article article;
 
     @Column(nullable = false)
-    private String filename; // Name of the image file
+    private String filename;
+
+    @Column(nullable = false)
+    private String mimeType;
 
     @Lob
     @Column(nullable = false)
-    private byte[] imageData; // Binary data for the image
+    private byte[] imageData;
+
+    @Column(nullable = false)
+    private long size;
 
     @Column(nullable = false)
     private boolean deleted = false;
@@ -34,8 +40,13 @@ public class Image {
     @Column(nullable = false, updatable = false)
     private LocalDateTime uploadedAt;
 
+    public static String getImageUrl(Long imageId) {
+        return "/api/images/" + imageId;
+    }
+
     @PrePersist
     protected void onCreate() {
         uploadedAt = LocalDateTime.now();
     }
+
 }
