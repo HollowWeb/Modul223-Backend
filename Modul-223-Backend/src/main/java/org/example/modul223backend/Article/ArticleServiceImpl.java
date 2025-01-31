@@ -9,6 +9,7 @@ import org.example.modul223backend.Tag.TagRepository;
 import org.example.modul223backend.User.User;
 import org.example.modul223backend.User.UserRepository;
 import org.example.modul223backend.exception.Article.ArticleNotFoundException;
+import org.example.modul223backend.exception.Article.InvalidArticleDataException;
 import org.example.modul223backend.exception.ErrorMessages;
 import org.example.modul223backend.exception.User.UserNotFoundException;
 import org.example.modul223backend.exception.UserException.UnauthorizedActionException;
@@ -71,7 +72,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * Creates a new article.
-     * @param articleDTO the data of the article to be created.
+     * @param id the data of the article to be created.
      * @return the created article as a DTO.
      * @throws UserNotFoundException if the user associated with the article is not found.
      * @throws InvalidArticleDataException if the article title is null or empty.
@@ -277,16 +278,5 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleDTO> getAllArticles() {
         return articleRepository.findAllActiveAndPublished().stream().map(Mapper::mapToArticleDTO).toList();
-    }
-    /**
-     * Retrieves articles by their status (e.g., DRAFT, PUBLISHED, ARCHIVED).
-     * @param status the status of the articles to retrieve.
-     * @return a list of articles with the specified status as DTOs.
-     * @throws IllegalArgumentException if the status is invalid.
-     */
-    @Override
-    public List<ArticleDTO> getArticlesByStatus(String status) {
-        List<Article> articles = articleRepository.findByStatus(Status.valueOf(status));
-        return articles.stream().map(Mapper::mapToArticleDTO).collect(Collectors.toList());
     }
 }

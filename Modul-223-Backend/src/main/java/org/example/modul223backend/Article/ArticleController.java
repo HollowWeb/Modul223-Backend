@@ -29,7 +29,7 @@ public class ArticleController {
 
     /**
      * Creates a new article.
-     * @param articleDTO the data of the article to be created.
+     * @param articleCreateDTO the data of the article to be created.
      * @return the created article as a DTO.
      */
     @PostMapping
@@ -52,7 +52,7 @@ public class ArticleController {
     /**
      * Updates an existing article by its ID.
      * @param id the ID of the article to update.
-     * @param articleDTO the updated data for the article.
+     * @param articleUpdateDTO the updated data for the article.
      * @return the updated article as a DTO.
      */
     @PutMapping("/{id}")
