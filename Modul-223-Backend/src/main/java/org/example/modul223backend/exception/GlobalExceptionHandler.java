@@ -14,6 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Global exception handler for the application.
+ * Catches and handles various exceptions, providing standardized error responses.
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

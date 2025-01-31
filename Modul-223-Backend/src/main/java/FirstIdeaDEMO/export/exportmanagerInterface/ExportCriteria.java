@@ -1,4 +1,4 @@
-package export.exportmanagerInterface;
+package FirstIdeaDEMO.export.exportmanagerInterface;
 
 /**
  * Includes the criteria data for the export.

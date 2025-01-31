@@ -28,9 +28,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Service implementation for managing user-related operations.
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
+    //Dependencies
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -39,7 +43,10 @@ public class UserServiceImpl implements UserService {
     private final CommentRepository commentRepository;
     private final ImageRepository imageRepository;
 
-    // Constructor-based Dependency Injection
+
+    /**
+     * Initializes a new instance of the UserServiceImpl class with all dependecy injections.
+     */
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, JwtUtil jwtUtil, ArticleRepository articleRepository, CommentRepository commentRepository, ImageRepository imageRepository) {
         this.userRepository = userRepository;
@@ -51,6 +58,10 @@ public class UserServiceImpl implements UserService {
         this.imageRepository = imageRepository;
     }
 
+    /**
+     * Creates a new user with the provided data.
+     * Hashing the password.
+     */
     @Transactional
     @Override
     public UserDTO createUser(UserCreateDTO userCreateDTO) {
@@ -73,6 +84,9 @@ public class UserServiceImpl implements UserService {
         return Mapper.mapToDTO(user);
     }
 
+    /**
+     * Retrieves a user by their ID.
+     */
     @Override
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)
@@ -80,12 +94,18 @@ public class UserServiceImpl implements UserService {
         return Mapper.mapToDTO(user);
     }
 
+    /**
+     * Retrieves a list of all users.
+     */
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map(Mapper::mapToDTO).toList();
     }
 
+    /**
+     * Updates a user's data by their ID.
+     */
     @Transactional
     @Override
     public UserDTO updateUser(Long id, UserDTO userDTO) {
@@ -117,6 +137,9 @@ public class UserServiceImpl implements UserService {
         return Mapper.mapToDTO(user);
     }
 
+    /**
+     * Deletes a user by their ID (soft delete).
+     */
     @Transactional
     @Override
     public void deleteUser(Long id) {

@@ -2,6 +2,10 @@ package org.example.modul223backend.Role;
 
 import lombok.*;
 
+/**
+ * Data Transfer Object (DTO) for the Role entity.
+ * Represents the data of a role to be transferred between the client and server.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -6,6 +6,10 @@ import org.example.modul223backend.Article.Article;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entity class representing a version of an article.
+ * Each version stores the content and metadata of a specific version of an article.
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -30,6 +34,9 @@ public class Version {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    /**
+     * Sets the creation timestamp before persisting the entity.
+     */
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

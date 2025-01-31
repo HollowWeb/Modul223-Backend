@@ -18,12 +18,24 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Filter class for handling JWT authentication.
+ * Intercepts incoming requests to validate and process JWT tokens.
+ */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtil jwtUtil;
 
+    /**
+     * Filters each incoming request to validate JWT tokens and set authentication in the security context.
+     * @param request the incoming HTTP request.
+     * @param response the HTTP response.
+     * @param chain the filter chain to pass the request/response along.
+     * @throws ServletException if an error occurs during request processing.
+     * @throws IOException if an I/O error occurs during request processing.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
