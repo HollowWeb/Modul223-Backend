@@ -11,6 +11,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+/**
+ * REST controller for managing Article entities.
+ * Provides endpoints for creating, retrieving, updating, and deleting articles.
+ */
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/articles")
@@ -24,7 +28,9 @@ public class ArticleController {
     }
 
     /**
-     * Create a new article.
+     * Creates a new article.
+     * @param articleCreateDTO the data of the article to be created.
+     * @return the created article as a DTO.
      */
     @PostMapping
     public ResponseEntity<ArticleDTO> createArticle(@RequestBody @Valid ArticleCreateDTO articleCreateDTO) {
@@ -33,7 +39,9 @@ public class ArticleController {
     }
 
     /**
-     * Fetch an article by ID.
+     * Retrieves a specific article by its ID.
+     * @param id the ID of the article to retrieve.
+     * @return the article as a DTO.
      */
     @GetMapping("/{id}")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable Long id) {
@@ -42,7 +50,10 @@ public class ArticleController {
     }
 
     /**
-     * Update an article by ID.
+     * Updates an existing article by its ID.
+     * @param id the ID of the article to update.
+     * @param articleUpdateDTO the updated data for the article.
+     * @return the updated article as a DTO.
      */
     @PutMapping("/{id}")
     public ResponseEntity<ArticleDTO> updateArticle(@PathVariable Long id, @RequestBody @Valid ArticleUpdateDTO articleUpdateDTO) {
@@ -51,7 +62,8 @@ public class ArticleController {
     }
 
     /**
-     * Soft-delete an article by ID.
+     * Deletes an article by its ID.
+     * @param id the ID of the article to delete.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteArticle(@PathVariable Long id) {

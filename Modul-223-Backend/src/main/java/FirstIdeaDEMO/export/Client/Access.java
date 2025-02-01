@@ -1,7 +1,7 @@
-package Client;
+package FirstIdeaDEMO.export.Client;
 
-import export.exportmanagerInterface.ExportCriteria;
-import export.exportmanagerInterface.IExportManager;
+import FirstIdeaDEMO.export.exportmanagerInterface.ExportCriteria;
+import FirstIdeaDEMO.export.exportmanagerInterface.IExportManager;
 
 /*
 Dies ist unsere schnittstelle zwischen Backend (Business logic) und GUI.

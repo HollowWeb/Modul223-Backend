@@ -10,6 +10,9 @@ import org.example.modul223backend.Role.Role;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Includes the transferable data for the user creation.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +28,10 @@ public class UserCreateDTO {
     private String password;
 
     private Set<Role> roles = new HashSet<>();
+
+    public UserCreateDTO(String testUser, String mail, String password123) {
+        this.username = testUser;
+        this.email = mail;
+        this.password = password123;
+    }
 }

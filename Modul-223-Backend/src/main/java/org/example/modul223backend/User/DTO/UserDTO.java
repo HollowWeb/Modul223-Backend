@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.util.Set;
 
+/**
+ * Includes transferable data for the user.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

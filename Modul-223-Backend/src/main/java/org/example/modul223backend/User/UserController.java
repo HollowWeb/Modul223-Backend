@@ -14,6 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Serves as a Controller for reaching out to different ENDPOINTS,
+ * triggering the specific method in it.
+ */
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -22,7 +26,10 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-
+    /**
+     * Initializes a new instance of <see="">UserController</see="UserController"> class.
+     * Including the specific dependency injection classes that implements the logic.
+     * */
     @Autowired
     public UserController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
@@ -85,6 +92,10 @@ public class UserController {
         return ResponseEntity.ok("User deleted successfully.");
     }
 
+    /**
+     * Login Endpoint including
+     * the method call for the login process logic.
+     */
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody LoginRequestDTO loginRequestDTO) {
         String token = userService.login(loginRequestDTO);

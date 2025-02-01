@@ -3,6 +3,10 @@ package org.example.modul223backend.Tag;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Entity class representing a Tag.
+ * Tags are used to categorize or label articles or other entities.
+ */
 @Entity
 @Data
 @NoArgsConstructor

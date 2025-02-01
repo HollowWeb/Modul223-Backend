@@ -132,8 +132,3 @@ Ensure the following tools and services are installed:
 
 ---
 
-## **8. Approval and Sign-Off:**
-- Checklist Prepared By: [Name]
-- Approved By: [Name]
-- Date: [Insert Date]
-
